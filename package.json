@@ -1,0 +1,13 @@
+{
+  "name": "back-inventario-bar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Yuran",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.20.0",
+    "nodemon": "^3.1.4"
+  }
+}
