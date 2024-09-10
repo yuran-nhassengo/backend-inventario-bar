@@ -13,6 +13,14 @@ const stockShema = mongoose.Schema({
     quantidade : { Number,
     require: true,
     },
+    precoCompra: {
+        type: Number,
+        require: true,
+    },
+    precoVenda: {
+        type: Number,
+        require: true,
+    },
 });
 
 const Stock = mongoose.model("Stock",stockShema);
