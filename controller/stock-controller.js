@@ -51,7 +51,39 @@ const getStock = asyncHandler (async (req,res)=>{
     }
 });
 
+const updateStock = asyncHandler(async (req, res) => {
+    const stockId = req.params.id; // Supondo que você esteja passando o ID como parâmetro de URL
+
+    if (!mongoose.Types.ObjectId.isValid(stockId)) {
+        return res.status(404).json({ message: "Produto não encontrado" });
+    }
+
+    try {
+        const { quantidade } = req.body; // Obtendo o novo valor do atributo quantity
+
+        if (quantidade === undefined) {
+            return res.status(400).json({ message: "Atributo quantity não fornecido" });
+        }
+
+        const updatedStock = await Stock.findByIdAndUpdate(
+            stockId,
+            { quantidade }, // Atualizando apenas o atributo quantity
+            { new: true, runValidators: true } // new: true retorna o documento atualizado, runValidators aplica as validações
+        );
+
+        if (!updatedStock) {
+            return res.status(404).json({ message: "Produto não encontrado" });
+        }
+
+        res.status(200).json(updatedStock);
+    } catch (error) {
+        console.log("update error", error);
+        return res.status(500).json({ message: `Internal error ${error.message}` });
+    }
+});
+
 module.exports ={
     createStock,
     getStock,
+    updateStock,
 }
