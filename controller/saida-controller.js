@@ -22,7 +22,7 @@ const createSaida = asyncHandler(async (req, res) => {
    
 
     // Crie a nova entrada
-    const newEntrada = await Entrada.create({ produtoId, q });
+    const newEntrada = await Saida.create({ produtoId, q });
     console.log("1")
     await newEntrada.save();
 
