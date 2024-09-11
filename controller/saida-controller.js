@@ -34,3 +34,8 @@ const createSaida = asyncHandler(async (req, res) => {
 
     res.status(201).json(newEntrada);
 });
+
+module.exports={
+
+    createSaida,
+};
