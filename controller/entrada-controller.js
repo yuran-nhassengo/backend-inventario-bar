@@ -1,11 +1,13 @@
 const Entrada = require('../model/entrada-model'); // Ajuste o caminho conforme necessário
 const Stock = require("../model/stock-model");
+const {updateStockQuantity} = require("./stock-controller")
 const asyncHandler = require('express-async-handler');
 
 // Criar uma nova entrada
 const createEntrada = asyncHandler(async (req, res) => {
     const { produtoId, quantidade } = req.body;
 
+    const q = Number(quantidade)
     // Verifique se o produto existe no estoque antes de continuar
     const stock = await Stock.findById(produtoId);
     if (!stock) {
@@ -13,12 +15,18 @@ const createEntrada = asyncHandler(async (req, res) => {
         return;
     }
 
+   
+
     // Crie a nova entrada
-    const newEntrada = new Entrada({ produtoId, quantidade });
+    const newEntrada = await Entrada.create({ produtoId, q });
+    console.log("1")
     await newEntrada.save();
 
+   
+
+
     // Atualize a quantidade no estoque
-    await updateStockQuantity(produtoId, quantidade);
+    await updateStockQuantity(produtoId, q);
 
     res.status(201).json(newEntrada);
 });

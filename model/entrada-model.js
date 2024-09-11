@@ -11,10 +11,10 @@ const entradaShema = mongoose.Schema({
         type: Number,
         require: true,
     },
-})
+});
 
 const Entrada = mongoose.model("Entrada",entradaShema);
 
-module.exports ={
-    Entrada,
-}
+module.exports = Entrada;
+
+

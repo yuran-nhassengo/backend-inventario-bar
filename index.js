@@ -20,6 +20,8 @@ app.use(express.urlencoded({extended: false}));
 
 app.use("/api/stock",require("./route/stock-route"));
 
+app.use("/api/stock",require("./route/entrada-route"));
+
 
 app.listen(port,()=>{
     console.log(`Listening on http://localhost:${port}`);
