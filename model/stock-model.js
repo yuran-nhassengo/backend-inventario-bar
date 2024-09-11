@@ -22,6 +22,8 @@ const stockShema = mongoose.Schema({
         type: Number,
         require: true,
     },
+},{
+    timestamps:true,
 });
 
 const Stock = mongoose.model("Stock",stockShema);

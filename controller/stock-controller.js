@@ -82,8 +82,18 @@ const updateStock = asyncHandler(async (req, res) => {
     }
 });
 
+const updateStockQuantity = asyncHandler(async (produtoId, quantidade) => {
+    const stock = await Stock.findOne({ _id: produtoId });
+    if (!stock) {
+        throw new Error('Produto não encontrado no estoque');
+    }
+    stock.quantidade += quantidade; // Adiciona a quantidade da entrada ao estoque
+    await stock.save();
+});
+
 module.exports ={
     createStock,
     getStock,
     updateStock,
+    updateStockQuantity,
 }
