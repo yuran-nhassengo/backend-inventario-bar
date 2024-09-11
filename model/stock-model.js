@@ -10,7 +10,8 @@ const stockShema = mongoose.Schema({
         type: String,
         require: true,
     },
-    quantidade : { Number,
+    quantidade : {
+        type: Number,
     require: true,
     },
     precoCompra: {

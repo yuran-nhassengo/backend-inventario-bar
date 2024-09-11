@@ -3,7 +3,9 @@ const asyncHandler = require ("express-async-handler");
 const Stock = require("../model/stock-model");
 
 const mongoose  = require("mongoose");
-const Stock = require("../model/stock-model");
+
+
+
 
 const createStock = asyncHandler ( async (req,res) =>{
 
@@ -38,9 +40,9 @@ const createStock = asyncHandler ( async (req,res) =>{
 const getStock = asyncHandler (async (req,res)=>{
 
     try {
-        const Stock = await Stock.find();
+        const allStock = await Stock.find();
 
-        res.status(200).json(Stock);
+        res.status(200).json(allStock);
 
     } catch ({error}) {
 
