@@ -82,6 +82,65 @@ const updateStock = asyncHandler(async (req, res) => {
     }
 });
 
+const updateStockAll = asyncHandler(async (req, res) => {
+    try {
+        const updates = req.body.updates; // Obtendo o array de atualizações
+
+        if (!Array.isArray(updates) || updates.length === 0) {
+            return res.status(400).json({ message: "Nenhuma atualização fornecida" });
+        }
+
+        // Iterando sobre o array de atualizações e aplicando-as
+        const updatePromises = updates.map(async (update) => {
+            const { id, quantity } = update;
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return { id, error: "ID inválido" };
+            }
+
+            try {
+                const updatedStock = await Stock.findByIdAndUpdate(
+                    id,
+                    { quantidade: quantity }, // Atualizando o atributo quantidade
+                    { new: true, runValidators: true }
+                );
+
+                if (!updatedStock) {
+                    return { id, error: "Produto não encontrado" };
+                }
+
+                return { id, updatedStock };
+            } catch (error) {
+                return { id, error: `Erro interno: ${error.message}` };
+            }
+        });
+
+        // Espera por todas as atualizações e retorna o resultado
+        const results = await Promise.all(updatePromises);
+
+        // Filtra e agrupa os resultados
+        const successfulUpdates = results.filter(result => result.updatedStock);
+        const errors = results.filter(result => result.error);
+
+        if (errors.length > 0) {
+            return res.status(400).json({
+                message: "Algumas atualizações falharam",
+                errors: errors
+            });
+        }
+
+        res.status(200).json({
+            message: "Estoque atualizado com sucesso",
+            updatedStocks: successfulUpdates
+        });
+
+    } catch (error) {
+        console.log("update error", error);
+        return res.status(500).json({ message: `Erro interno: ${error.message}` });
+    }
+});
+
+
 const updateStockQuantity = asyncHandler(async (produtoId, quantidade) => {
     const stock = await Stock.findOne({ _id: produtoId });
     if (!stock) {
@@ -96,4 +155,5 @@ module.exports ={
     getStock,
     updateStock,
     updateStockQuantity,
+    updateStockAll 
 }
